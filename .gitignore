@@ -33,6 +33,9 @@ checkpoints/
 data/raw/
 data/processed/
 *.zip
+paper/
+REPORT_seed2024.md
+analysis/results/
 
 # Generated files
 *.aux
