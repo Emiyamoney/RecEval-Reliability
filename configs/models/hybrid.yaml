@@ -1,0 +1,13 @@
+# Hybrid Model: Profile + Behavior + CF
+name: hybrid
+type: hybrid
+hidden_dims: [256, 128, 64]
+dropout: 0.3
+lr: 0.005
+epochs: 30
+batch_size: 2048
+feature_groups:
+  use_user_profile: true
+  use_item_profile: true
+  use_behavior: true
+  use_cf_embedding: true

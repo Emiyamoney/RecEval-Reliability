@@ -1,0 +1,13 @@
+model,BC_WR_mean,GB_WR_mean,ML1M_WR_mean
+GlobalMean,0.819,0.991,1.110
+UserBias,0.735,0.894,1.030
+ItemBias,0.807,0.953,0.975
+UserItemBias,0.724,0.854,0.906
+SVD,0.727,0.849,0.898
+NeuMF,0.749,0.855,0.916
+DeepFM,0.785,1.047,1.262
+BehaviorMLP,0.657,0.859,0.918
+ProfileMLP,0.811,0.979,1.060
+Hybrid,0.650,0.858,0.906
+DualHard,0.744,0.859,0.916
+DualSoft,0.675,0.859,0.915

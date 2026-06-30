@@ -1,0 +1,44 @@
+# Book-Crossing 数据集配置
+# 特征: age (demographic), author/year/publisher (item content)
+name: book_crossing
+
+raw_dir: "data/raw/book_crossing"
+
+# 用户画像特征
+user_profile_features:
+  age:
+    type: numerical
+    enabled: true
+  age_bucket:
+    type: categorical
+    enabled: true
+
+# 物品内容特征
+item_profile_features:
+  author:
+    type: categorical
+    enabled: true
+  year:
+    type: numerical
+    enabled: true
+  publisher:
+    type: categorical
+    enabled: false   # publisher 类别太多, 默认关闭
+
+# 行为特征
+behavior_features:
+  enabled: true
+  source: train_only
+  features:
+    - user_interaction_count
+    - item_interaction_count
+    - user_mean_rating
+    - item_mean_rating
+    - user_rating_std
+    - item_rating_std
+    - activity_index
+
+# 评分范围 (已在 loader 中归一化到 1-5)
+rating_scale:
+  min: 1
+  max: 5

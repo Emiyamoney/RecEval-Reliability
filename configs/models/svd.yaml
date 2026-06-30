@@ -1,0 +1,7 @@
+# SVD Matrix Factorization
+name: svd
+type: svd
+factors: 50
+lr: 0.01
+reg: 0.02
+epochs: 20

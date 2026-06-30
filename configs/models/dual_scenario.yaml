@@ -1,0 +1,11 @@
+# Dual-Scenario Framework
+name: dual_scenario
+type: dual_scenario
+# Hard Switch 或 Soft Gating
+variant: "hard_switch"   # "hard_switch" | "soft_gating"
+tau: null   # null = 从 tau_scan 自动确定
+hidden_dims: [128, 64]
+dropout: 0.3
+lr: 0.005
+epochs: 20
+batch_size: 2048

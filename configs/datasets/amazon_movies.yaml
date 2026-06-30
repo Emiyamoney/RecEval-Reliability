@@ -1,0 +1,65 @@
+# Amazon Movies and TV 数据集配置
+# 注意: Amazon 数据集通常只有 (reviewerID, asin, overall, unixReviewTime) 
+# 缺少显式 demographic 用户画像。Profile 特征主要来自 item metadata 和 cold-start-safe user 特征。
+
+name: amazon_movies
+type: amazon
+
+# 原始数据路径
+raw:
+  reviews: "data/raw/amazon_movies/reviews.json"     # 或 .csv
+  metadata: "data/raw/amazon_movies/metadata.json"   # 可选
+
+# 特征列映射
+column_mapping:
+  user_id: "reviewerID"
+  item_id: "asin"
+  rating: "overall"
+  timestamp: "unixReviewTime"
+  # 可选
+  review_text: "reviewText"
+  summary: "summary"
+
+# 用户 profile 特征: Amazon 无显式 demographic
+# 使用 item metadata + non-interactive user features 作为 profile
+user_profile_features:
+  # Amazon 无 demographic，此部分为空
+  # 实际 profile 主要来自 item metadata 侧
+  account_age:
+    enabled: false
+  reviewer_name:
+    enabled: false
+
+# 商品 profile 特征
+item_profile_features:
+  category:
+    enabled: true
+    type: multi_hot
+    max_categories: 50
+  brand:
+    enabled: true
+    type: categorical
+  title:
+    enabled: false  # 文本特征可选，暂不启用
+  description:
+    enabled: false
+
+# 行为特征
+behavior_features:
+  enabled: true
+  compute_from: "train_only"
+  features:
+    - user_interaction_count
+    - item_interaction_count
+    - user_mean_rating
+    - item_mean_rating
+    - user_rating_std
+    - item_rating_std
+    - user_recent_activity
+    - item_recent_popularity
+    - time_decay_activity
+    - activity_index
+
+rating_range:
+  min: 1.0
+  max: 5.0

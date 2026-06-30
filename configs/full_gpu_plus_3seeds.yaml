@@ -1,0 +1,93 @@
+# ============================================================
+# GPU Full Experiment 配置 — result_plus 补跑专用 (3 seeds, no lightgcn)
+# 论文写作只需 3 个种子, LightGCN 留到最后单独跑
+# ============================================================
+
+mode: full
+device: cuda
+
+runtime:
+  device: cuda
+  num_workers: 0
+  pin_memory: false
+  persistent_workers: false
+  non_blocking: false
+  amp: true
+  torch_compile: false
+  cudnn_benchmark: true
+  torch_num_threads: auto
+  torch_interop_threads: auto
+  show_progress: true
+  progress_leave: false
+  profile_timing: true
+
+datasets:
+  - ml1m
+  - goodbooks
+  - book_crossing
+
+sample:
+  enabled: false
+
+splits:
+  - strict_cold
+  - warm_random
+  - warm_temporal
+
+training:
+  epochs: 50
+  batch_size: 2048
+  embedding_dim: 64
+  hidden_dims: [256, 128, 64]
+  early_stopping_patience: 5
+  num_workers: 0
+  lr: 0.005
+
+# 论文只需 3 个种子
+seeds: [2024, 2025, 2026]
+
+tau_scan:
+  values: auto
+
+# LightGCN 留到最后单独跑, 先跑其他 12 个模型
+models:
+  - global_mean
+  - user_bias
+  - item_bias
+  - user_item_bias
+  - svd
+  - neumf
+  - deepfm
+  - profile_mlp
+  - behavior_mlp
+  - hybrid
+  - dual_hard_switch
+  - dual_soft_gating
+
+output_dir: "result_plus"
+
+ablation:
+  enabled: true
+  groups:
+    - name: "Profile-Only"
+      feature_groups: {use_user_profile: true, use_item_profile: true, use_behavior: false, use_cf_embedding: false}
+    - name: "Behavior-Only"
+      feature_groups: {use_user_profile: false, use_item_profile: false, use_behavior: true, use_cf_embedding: false}
+    - name: "Profile+Behavior"
+      feature_groups: {use_user_profile: true, use_item_profile: true, use_behavior: true, use_cf_embedding: false}
+    - name: "Profile+CF"
+      feature_groups: {use_user_profile: true, use_item_profile: true, use_behavior: false, use_cf_embedding: true}
+    - name: "Behavior+CF"
+      feature_groups: {use_user_profile: false, use_item_profile: false, use_behavior: true, use_cf_embedding: true}
+    - name: "Profile+Behavior+CF"
+      feature_groups: {use_user_profile: true, use_item_profile: true, use_behavior: true, use_cf_embedding: true}
+    - name: "Dual-Scenario"
+      feature_groups: {use_user_profile: true, use_item_profile: true, use_behavior: true, use_cf_embedding: true, dual: true}
+
+significance:
+  enabled: true
+  tests:
+    - paired_ttest
+    - wilcoxon
+    - cohens_d
+  alpha: 0.05

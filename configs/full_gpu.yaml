@@ -1,0 +1,107 @@
+# ============================================================
+# GPU Full Experiment 配置
+# 目标: 完整实验, 产出论文级结果
+# ============================================================
+
+mode: full
+device: cuda
+
+# ============================================================
+# Runtime 性能配置 (新增)
+# ============================================================
+runtime:
+  device: cuda
+  num_workers: 0
+  pin_memory: false
+  persistent_workers: false
+  non_blocking: false
+  amp: true                        # 混合精度训练
+  torch_compile: false             # torch.compile (实验性, 默认关闭)
+  cudnn_benchmark: true
+  torch_num_threads: auto
+  torch_interop_threads: auto
+  show_progress: true              # tqdm 进度条
+  progress_leave: false            # 进度条完成后是否保留
+  profile_timing: true             # 输出性能日志
+
+# 数据集列表
+datasets:
+  - ml1m
+  - goodbooks
+  - book_crossing
+
+# 采样配置 (full experiment 不采样)
+sample:
+  enabled: false
+
+# 划分配置
+splits:
+  - strict_cold
+  - warm_random
+  - warm_temporal
+
+# 训练配置 — 9700X + RTX 5060 (16GB) 优化
+training:
+  epochs: 50
+  batch_size: 2048
+  embedding_dim: 64
+  hidden_dims: [256, 128, 64]
+  early_stopping_patience: 5
+  num_workers: 0
+  lr: 0.005
+
+# 随机种子
+seeds: [2024, 2025, 2026, 2027, 2028]
+
+# τ 扫描配置
+tau_scan:
+  values: auto   # 自动根据数据分位数生成
+  # 也支持手动指定:
+  # values: [1, 2, 3, 5, 10, 15, 20, 30, 50, 100]
+
+# 模型列表 (全部 13 个)
+models:
+  - global_mean
+  - user_bias
+  - item_bias
+  - user_item_bias
+  - svd
+  - neumf
+  - deepfm
+  - lightgcn
+  - profile_mlp
+  - behavior_mlp
+  - hybrid
+  - dual_hard_switch
+  - dual_soft_gating
+
+# 输出目录
+output_dir: "results/full"
+
+# 消融实验配置
+ablation:
+  enabled: true
+  groups:
+    - name: "Profile-Only"
+      feature_groups: {use_user_profile: true, use_item_profile: true, use_behavior: false, use_cf_embedding: false}
+    - name: "Behavior-Only"
+      feature_groups: {use_user_profile: false, use_item_profile: false, use_behavior: true, use_cf_embedding: false}
+    - name: "Profile+Behavior"
+      feature_groups: {use_user_profile: true, use_item_profile: true, use_behavior: true, use_cf_embedding: false}
+    - name: "Profile+CF"
+      feature_groups: {use_user_profile: true, use_item_profile: true, use_behavior: false, use_cf_embedding: true}
+    - name: "Behavior+CF"
+      feature_groups: {use_user_profile: false, use_item_profile: false, use_behavior: true, use_cf_embedding: true}
+    - name: "Profile+Behavior+CF"
+      feature_groups: {use_user_profile: true, use_item_profile: true, use_behavior: true, use_cf_embedding: true}
+    - name: "Dual-Scenario"
+      feature_groups: {use_user_profile: true, use_item_profile: true, use_behavior: true, use_cf_embedding: true, dual: true}
+
+# 显著性检验
+significance:
+  enabled: true
+  tests:
+    - paired_ttest
+    - wilcoxon
+    - cohens_d
+  alpha: 0.05

@@ -1,0 +1,46 @@
+# Goodbooks-10k 数据集配置 (替代 Book-Crossing)
+# 来源: https://github.com/zygmuntz/goodbooks-10k
+# 10000本书, 600万评分, 53424用户, 评分 1-5
+
+name: goodbooks
+type: goodbooks
+
+raw:
+  ratings: "data/raw/goodbooks/ratings.csv"
+  books: "data/raw/goodbooks/books.csv"
+  book_tags: "data/raw/goodbooks/book_tags.csv"
+  tags: "data/raw/goodbooks/tags.csv"
+
+user_profile_features:
+  # Goodbooks 无 demographic, profile 来自书籍 metadata
+  account_age:
+    enabled: false
+
+item_profile_features:
+  author:
+    enabled: true
+    type: categorical
+  year:
+    enabled: true
+    type: numerical
+  genre:
+    enabled: true
+    type: categorical
+  title:
+    enabled: false
+
+behavior_features:
+  enabled: true
+  compute_from: "train_only"
+  features:
+    - user_interaction_count
+    - item_interaction_count
+    - user_mean_rating
+    - item_mean_rating
+    - user_rating_std
+    - item_rating_std
+    - activity_index
+
+rating_range:
+  min: 1.0
+  max: 5.0

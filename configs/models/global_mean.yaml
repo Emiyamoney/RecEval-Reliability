@@ -1,0 +1,6 @@
+# GlobalMean / Bias Baseline 模型配置
+name: global_mean
+type: baseline
+use_global_mean: true
+use_user_bias: false
+use_item_bias: false

@@ -1,0 +1,58 @@
+# ============================================================
+# CPU Full Experiment 配置 (论文级)
+# 适配无 GPU 环境
+# ============================================================
+
+mode: full
+device: cpu
+
+datasets:
+  - ml1m
+  - goodbooks
+  - book_crossing
+
+sample:
+  enabled: false
+
+splits:
+  - strict_cold
+  - warm_random
+
+training:
+  epochs: 20
+  batch_size: 2048
+  embedding_dim: 64
+  hidden_dims: [128, 64]
+  early_stopping_patience: 5
+  lr: 0.005
+  dropout: 0.3
+
+seeds: [2024, 2025, 2026, 2027, 2028]
+
+models:
+  - global_mean
+  - user_bias
+  - item_bias
+  - user_item_bias
+  - svd
+  - neumf
+  - deepfm
+  - lightgcn
+  - profile_mlp
+  - behavior_mlp
+  - hybrid
+  - dual_hard_switch
+  - dual_soft_gating
+
+output_dir: "results/full"
+
+ablation:
+  enabled: false
+
+significance:
+  enabled: true
+  tests:
+    - paired_ttest
+    - wilcoxon
+    - cohens_d
+  alpha: 0.05

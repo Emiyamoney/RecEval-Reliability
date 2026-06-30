@@ -1,0 +1,46 @@
+# 快速验证配置：端到端 dual_soft_gating 改动
+# 目标：单 seed + 单 split + ML-1M，验证新代码能否跑通且性能改善
+mode: verify
+device: cpu
+
+runtime:
+  device: cpu
+  num_workers: 0
+  pin_memory: false
+  amp: false
+  torch_compile: false
+  cudnn_benchmark: false
+  show_progress: true
+  progress_leave: false
+  profile_timing: true
+
+datasets:
+  - ml1m
+
+# 不采样，用完整 ML-1M（约 100 万交互）
+sample:
+  enabled: false
+
+splits:
+  - strict_cold
+
+training:
+  epochs: 20
+  batch_size: 2048
+  embedding_dim: 64
+  hidden_dims: [128, 64]
+  early_stopping_patience: 5
+  num_workers: 0
+  lr: 0.005
+
+seeds: [42]
+
+tau_scan:
+  values: auto
+
+# 只跑 dual_soft_gating 和 hybrid 做对比
+models:
+  - hybrid
+  - dual_soft_gating
+
+output_dir: "results/verify_e2e"

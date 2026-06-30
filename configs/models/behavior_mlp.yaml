@@ -1,0 +1,13 @@
+# Behavior-Only / Activity MLP
+name: behavior_mlp
+type: behavior_mlp
+hidden_dims: [128, 64]
+dropout: 0.3
+lr: 0.005
+epochs: 20
+batch_size: 2048
+feature_groups:
+  use_user_profile: false
+  use_item_profile: false
+  use_behavior: true
+  use_cf_embedding: false

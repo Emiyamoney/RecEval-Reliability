@@ -1,0 +1,81 @@
+# ============================================================
+# CPU Smoke Test 配置
+# 目标: 在普通 CPU 环境下快速验证完整流程
+# 不追求论文级结果, 只验证数据/模型/评估 pipeline 可运行
+# ============================================================
+
+mode: smoke
+device: cpu
+
+# ============================================================
+# Runtime 性能配置
+# ============================================================
+runtime:
+  device: cpu
+  num_workers: 0
+  pin_memory: false
+  persistent_workers: false
+  amp: false
+  torch_compile: false
+  cudnn_benchmark: false
+  torch_num_threads: auto
+  torch_interop_threads: auto
+  show_progress: true
+  progress_leave: false
+  profile_timing: true
+
+# 数据集列表
+datasets:
+  - ml1m
+  - goodbooks
+  - book_crossing
+
+# 采样配置 (smoke test 用小样本)
+sample:
+  enabled: true
+  max_users: 500
+  max_items: 500
+  max_interactions: 5000
+
+# 划分配置
+splits:
+  - strict_cold
+  - warm_random
+  # - warm_temporal  # smoke test 跳过
+
+# 训练配置
+training:
+  epochs: 2
+  batch_size: 256
+  embedding_dim: 16
+  hidden_dims: [32, 16]
+  early_stopping_patience: 1
+  num_workers: 0
+  lr: 0.01
+
+# 随机种子
+seeds: [42]
+
+# τ 扫描配置
+tau_scan:
+  values: [1, 3, 5, 10]
+  # auto: false  # smoke test 不用 auto
+
+# 模型列表
+models:
+  - global_mean
+  - user_item_bias
+  - svd
+  - profile_mlp
+  - behavior_mlp
+  - hybrid
+  - dual_hard_switch
+
+# smoke test 跳过的重模型
+skip_heavy_models_in_smoke:
+  - lightgcn
+  - deepfm
+  - neumf
+
+# 输出目录
+output_dir: "results/smoke"

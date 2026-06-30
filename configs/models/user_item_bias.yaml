@@ -1,0 +1,6 @@
+# User + Item Bias Baseline
+name: user_item_bias
+type: baseline
+use_global_mean: true
+use_user_bias: true
+use_item_bias: true

@@ -1,0 +1,9 @@
+# NeuMF (Neural Matrix Factorization)
+name: neumf
+type: neumf
+embedding_dim: 32
+mlp_layers: [64, 32, 16]
+dropout: 0.2
+lr: 0.005
+epochs: 20
+batch_size: 2048

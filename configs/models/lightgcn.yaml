@@ -1,0 +1,11 @@
+# LightGCN
+name: lightgcn
+type: lightgcn
+embedding_dim: 64
+n_layers: 3
+lr: 0.001
+reg: 0.0001
+epochs: 50
+batch_size: 4096
+# 注意: LightGCN 对 strict cold-start 用户需 fallback
+cold_start_fallback: "item_bias"

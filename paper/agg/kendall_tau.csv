@@ -1,0 +1,8 @@
+dataset,pair,kendall_tau,n_models
+ML-1M,SC-vs-WR,0.606,12
+ML-1M,SC-vs-WT,0.303,12
+ML-1M,WR-vs-WT,0.576,12
+GoodBooks,SC-vs-WR,0.333,12
+GoodBooks,SC-vs-WT,-0.030,12
+GoodBooks,WR-vs-WT,0.455,12
+Book-Crossing,SC-vs-WR,0.576,12

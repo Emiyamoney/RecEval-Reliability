@@ -1,0 +1,13 @@
+# DeepFM
+name: deepfm
+type: deepfm
+embedding_dim: 16
+deep_layers: [256, 128, 64]
+dropout: 0.3
+lr: 0.005
+epochs: 20
+batch_size: 4096
+feature_groups:
+  use_user_profile: true
+  use_item_profile: true
+  use_behavior: true

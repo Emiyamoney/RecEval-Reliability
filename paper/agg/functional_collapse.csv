@@ -1,0 +1,4 @@
+dataset,GlobalMean_SC_mean,UserBias_SC_mean,diff,UserItemBias_SC_mean,ItemBias_SC_mean,diff2
+ML-1M,1.1249,1.1249,0.00000,0.9896,0.9860,0.00359
+GoodBooks,0.9916,0.9916,0.00000,0.9596,0.9547,0.00493
+Book-Crossing,0.8214,0.8214,0.00000,0.8088,0.8092,0.00037

@@ -1,0 +1,25 @@
+=== 3-SEED AGGREGATION SUMMARY (exclude LightGCN) ===
+
+## Functional collapse (SC): UserBias vs GlobalMean
+  ML-1M: GlobalMean=1.1249  UserBias=1.1249  diff=0.00000
+  GoodBooks: GlobalMean=0.9916  UserBias=0.9916  diff=0.00000
+  Book-Crossing: GlobalMean=0.8214  UserBias=0.8214  diff=0.00000
+
+## Kendall tau between protocols
+  ML-1M SC-vs-WR: tau=0.606 (n=12)
+  ML-1M SC-vs-WT: tau=0.303 (n=12)
+  ML-1M WR-vs-WT: tau=0.576 (n=12)
+  GoodBooks SC-vs-WR: tau=0.333 (n=12)
+  GoodBooks SC-vs-WT: tau=-0.030 (n=12)
+  GoodBooks WR-vs-WT: tau=0.455 (n=12)
+  Book-Crossing SC-vs-WR: tau=0.576 (n=12)
+
+## Top-3 per protocol per dataset (by mean RMSE)
+  ML-1M SC: ItemBias(r1), SVD(r2), UserItemBias(r3)
+  ML-1M WR: SVD(r1), UserItemBias(r2), Hybrid(r3)
+  ML-1M WT: DualSoft(r1), Hybrid(r2), BehaviorMLP(r3)
+  GoodBooks SC: ItemBias(r1), UserItemBias(r2), SVD(r3)
+  GoodBooks WR: SVD(r1), UserItemBias(r2), NeuMF(r3)
+  GoodBooks WT: Hybrid(r1), DualHard(r2), DualSoft(r3)
+  Book-Crossing SC: BehaviorMLP(r1), Hybrid(r2), DualSoft(r3)
+  Book-Crossing WR: Hybrid(r1), BehaviorMLP(r2), DualSoft(r3)

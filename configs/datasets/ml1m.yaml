@@ -1,0 +1,92 @@
+# MovieLens 1M 数据集配置
+
+name: ml1m
+type: movielens
+
+# 原始数据路径（相对于项目根目录或绝对路径）
+raw:
+  ratings: "data/raw/ml1m/training_total.csv"
+  movie_vec: "data/raw/ml1m/movie_audience_vector_net_attitude.csv"
+  user_pref: "data/raw/ml1m/training_user_genre_preference.csv"
+
+# 特征列映射
+column_mapping:
+  user_id: "UserID"
+  item_id: "MovieID"
+  rating: "Rating"
+  timestamp: "Timestamp"
+  gender: "Gender"
+  age: "Age"
+  occupation: "Occupation"
+  zip_code: "Zip-code"
+  genres: "Genres"
+  title: "Title"
+
+# 用户 profile 特征配置
+user_profile_features:
+  gender:
+    enabled: true
+    type: categorical
+    vocab: ["F", "M"]
+  age:
+    enabled: true
+    type: categorical
+    buckets:
+      - [1, 18]    # "Under 18"
+      - [18, 25]   # "18-24"
+      - [25, 35]   # "25-34"
+      - [35, 45]   # "35-44"
+      - [45, 50]   # "45-49"
+      - [50, 56]   # "50-55"
+      - [56, 100]  # "56+"
+    bucket_labels: ["<18", "18-24", "25-34", "35-44", "45-49", "50-55", "56+"]
+  occupation:
+    enabled: true
+    type: categorical
+    num_classes: 21
+
+# 电影 profile 特征配置
+item_profile_features:
+  genres:
+    enabled: true
+    type: multi_hot
+    genres_list:
+      - Action
+      - Adventure
+      - Animation
+      - "Children's"
+      - Comedy
+      - Crime
+      - Documentary
+      - Drama
+      - Fantasy
+      - "Film-Noir"
+      - Horror
+      - Musical
+      - Mystery
+      - Romance
+      - "Sci-Fi"
+      - Thriller
+      - War
+      - Western
+
+# 行为特征配置
+behavior_features:
+  enabled: true
+  compute_from: "train_only"  # 仅从训练集计算
+  features:
+    - user_interaction_count
+    - item_interaction_count
+    - user_mean_rating
+    - item_mean_rating
+    - user_rating_std
+    - item_rating_std
+    - user_recent_activity
+    - item_recent_popularity
+    - time_decay_activity
+    - activity_index
+
+# 评分范围
+rating_range:
+  min: 1.0
+  max: 5.0
